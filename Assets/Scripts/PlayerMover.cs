@@ -12,6 +12,7 @@ public class PlayerMover : MonoBehaviour
 	public float points = 0;
 
 	public bool jumped;
+	public float maxSpeed;
 
 	private Rigidbody2D rb;
 	public float startingY;
@@ -44,7 +45,7 @@ public class PlayerMover : MonoBehaviour
 		{
 			text.text = points.ToString();
 		}
-		if (Input.GetMouseButtonDown(0))
+		if (Input.GetKeyDown(KeyCode.Space))
 		{
 			if (!jumped)
 			{
@@ -52,6 +53,12 @@ public class PlayerMover : MonoBehaviour
 				jumped = true;
 			}
 		}
+
+		float move = Input.GetAxis("Horizontal");
+		rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y);
+		Vector2 movement = new Vector2(move, 0);
+		rb.AddForce(movement * maxSpeed);
+
 		if (Input.GetMouseButton(0))
 		{
 			rb.AddForce(new Vector2(0f,liftingForce*Time.deltaTime));
