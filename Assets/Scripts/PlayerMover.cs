@@ -1,11 +1,15 @@
-﻿									  using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMover : MonoBehaviour
 {
 	public float jumpForce;
 	public float liftingForce;
+	public Text text;
+
+	public float points = 0;
 
 	public bool jumped;
 
@@ -25,11 +29,21 @@ public class PlayerMover : MonoBehaviour
 		{
 			jumped = false;
 		}
+		if (collision.gameObject.tag == "Coin")
+		{
+			jumped = false;
+			Destroy(collision.gameObject, 0);
+			points++;
+		}
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
+		if(points.ToString() != text.text)
+		{
+			text.text = points.ToString();
+		}
 		if (Input.GetMouseButtonDown(0))
 		{
 			if (!jumped)

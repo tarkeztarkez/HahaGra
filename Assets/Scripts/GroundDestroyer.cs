@@ -14,7 +14,7 @@ public class GroundDestroyer : MonoBehaviour
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
-		if (collision.gameObject.tag == "Ground")
+		if (collision.gameObject.name == "PostApoGrass" || collision.gameObject.name == "PostApoGrass(Clone)")
 		{
 			Instantiate(ground, new Vector3(17f, -5f,-1f), transform.rotation);
 
