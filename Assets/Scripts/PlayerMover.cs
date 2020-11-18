@@ -22,19 +22,23 @@ public class PlayerMover : MonoBehaviour
     {
 		rb = gameObject.GetComponent<Rigidbody2D>();
 		startingY = transform.position.y + 0.03F;
-    }
+		GetComponent<SpriteRenderer>().color = Color.green;
+	}
 
 	private void OnCollisionEnter2D(Collision2D collision)
 	{
 		if(collision.gameObject.tag == "Ground")
 		{
 			jumped = false;
+			GetComponent<SpriteRenderer>().color = Color.green;
+		
 		}
 		if (collision.gameObject.tag == "Coin")
 		{
 			jumped = false;
 			Destroy(collision.gameObject, 0);
 			points++;
+			GetComponent<SpriteRenderer>().color = Color.green;
 		}
 	}
 
@@ -49,10 +53,20 @@ public class PlayerMover : MonoBehaviour
 		{
 			if (!jumped)
 			{
-				rb.velocity = new Vector2(0f,jumpForce);
+				GetComponent<SpriteRenderer>().color = Color.white;
+				rb.velocity = new Vector2(0f, jumpForce);
 				jumped = true;
 			}
 		}
+		if (Input.GetKeyDown(KeyCode.LeftControl))
+		{
+			rb.constraints = RigidbodyConstraints2D.FreezeAll;
+		}
+		else if (Input.GetKeyUp(KeyCode.LeftControl))
+		{
+			rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+		}
+
 
 		float move = Input.GetAxis("Horizontal");
 		rb.velocity = new Vector2(move * maxSpeed, rb.velocity.y);
