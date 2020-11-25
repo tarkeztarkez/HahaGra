@@ -8,6 +8,7 @@ public class PlayerMover : MonoBehaviour
 	public float jumpForce;
 	public float liftingForce;
 	public Text text;
+	public Animator animator;
 
 	public float points = 0;
 
@@ -31,7 +32,8 @@ public class PlayerMover : MonoBehaviour
 		{
 			jumped = false;
 			GetComponent<SpriteRenderer>().color = Color.green;
-		
+			animator.SetBool("jumped", false);
+
 		}
 		if (collision.gameObject.tag == "Coin")
 		{
@@ -39,6 +41,7 @@ public class PlayerMover : MonoBehaviour
 			Destroy(collision.gameObject, 0);
 			points++;
 			GetComponent<SpriteRenderer>().color = Color.green;
+			animator.SetBool("jumped", false);
 		}
 	}
 
@@ -56,6 +59,7 @@ public class PlayerMover : MonoBehaviour
 				GetComponent<SpriteRenderer>().color = Color.white;
 				rb.velocity = new Vector2(0f, jumpForce);
 				jumped = true;
+				animator.SetBool("jumped", true);
 			}
 		}
 		if (Input.GetKeyDown(KeyCode.LeftControl))
