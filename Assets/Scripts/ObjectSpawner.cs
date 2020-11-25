@@ -8,7 +8,8 @@ public class ObjectSpawner : MonoBehaviour
 
 	public float delay;
 	float timeFromSpawn;
-	public float[] spawnpoints;
+	public int min;
+	public int max;
 	System.Random rand = new System.Random();
 
     // Start is called before the first frame update
@@ -22,7 +23,7 @@ public class ObjectSpawner : MonoBehaviour
     {
 		if (timeFromSpawn >= delay)
 		{
-			Instantiate(platform, new Vector2(transform.position.x, spawnpoints[rand.Next(0, spawnpoints.Length)]), transform.rotation);
+			Instantiate(platform, new Vector2(transform.position.x,rand.Next(min,max)), transform.rotation);
 			timeFromSpawn = 0;
 		}
 		timeFromSpawn += Time.deltaTime;
