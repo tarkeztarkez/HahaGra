@@ -17,6 +17,7 @@ public class PlayerMover : MonoBehaviour
 
 	private Rigidbody2D rb;
 	public float startingY;
+	public GameObject panel;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +43,11 @@ public class PlayerMover : MonoBehaviour
 			points++;
 			GetComponent<SpriteRenderer>().color = Color.green;
 			animator.SetBool("jumped", false);
+		}
+
+		if (collision.gameObject.tag == "Killer")
+		{
+			panel.SetActive(true);
 		}
 	}
 
