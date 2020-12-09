@@ -39,16 +39,25 @@ public class PlayerMover : MonoBehaviour
 		}
 		if (collision.gameObject.tag == "Coin")
 		{
-			Destroy(collision.gameObject, 0);
-			points++;
-			animator.SetBool("jumped", false);
-			spriteRenderer.color = Color.green;
-			jumped = false;
+			gotCoin(collision);
+		}
+		if (collision.gameObject.tag == "SlowTime")
+		{
+			gotCoin(collision);
+			GameHandler.slowTimeActivated = true;
+		}
+		if (collision.gameObject.tag == "Immortality")
+		{
+			gotCoin(collision);
+			GameHandler.immortalityActivated = true;
 		}
 
 		if (collision.gameObject.tag == "Killer")
 		{
-			gameHandler.lives += -1;
+			if (!GameHandler.immortalityActivated)
+			{
+				gameHandler.lives += -1;
+			}
 		}
 	}
 
@@ -95,5 +104,15 @@ public class PlayerMover : MonoBehaviour
 			}
 			
 		}
+	}
+
+	public void gotCoin(Collision2D collision)
+	{
+		Destroy(collision.gameObject, 0);
+		points++;
+		animator.SetBool("jumped", false);
+		spriteRenderer.color = Color.green;
+		jumped = false;
+		if (gameHandler.lives <= 3) gameHandler.lives += 1;
 	}
 }

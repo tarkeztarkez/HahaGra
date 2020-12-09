@@ -8,10 +8,20 @@ public class GameHandler : MonoBehaviour
 	public GameObject restartPanel;
 	public int lives = 3;
 
+	public static bool slowTimeActivated;
+	public static bool immortalityActivated;
+	public static float gameSpeed;
 
+	public float slowTimeDelay;
+	float timeFromSlow;
+	public float immortalitydelay;
+	float timeFromImmortality;
 	void Start()
     {
 		Time.timeScale = 1f;
+		slowTimeActivated = false;
+		immortalityActivated = false;
+		gameSpeed = 4;
     }
 
     // Update is called once per frame
@@ -28,6 +38,21 @@ public class GameHandler : MonoBehaviour
 		{
 			Die();
 		}
+		if (slowTimeActivated)
+		{
+			SlowTimeActivated();
+		}
+		if (Input.GetKeyDown(KeyCode.P))
+		{
+			if(Time.timeScale == 0f)
+			{
+				Time.timeScale = 1f;
+			}
+			else
+			{
+				Time.timeScale = 0f;
+			}
+		}
     }
 
 	public void Restart()
@@ -40,4 +65,27 @@ public class GameHandler : MonoBehaviour
 		restartPanel.SetActive(true);
 	}
 
+
+	public void SlowTimeActivated()
+	{
+		gameSpeed = 2;
+		if (timeFromSlow >= slowTimeDelay)
+		{
+			slowTimeActivated = false;
+			gameSpeed = 4;
+			timeFromSlow = 0;
+		}
+		timeFromSlow += Time.deltaTime;
+	}
+
+	public void ImmortalityActivated()
+	{
+		if (timeFromSlow >= immortalitydelay)
+		{
+			immortalityActivated = false;
+			timeFromImmortality = 0;
+		}
+		timeFromImmortality += Time.deltaTime;
+	}
 }
+
