@@ -6,8 +6,10 @@ using UnityEngine.SceneManagement;
 public class GameHandler : MonoBehaviour
 {
 	public GameObject restartPanel;
-    // Start is called before the first frame update
-    void Start()
+	public int lives = 3;
+
+
+	void Start()
     {
 		Time.timeScale = 1f;
     }
@@ -17,9 +19,14 @@ public class GameHandler : MonoBehaviour
     {
 		if (restartPanel.active)
 		{
+			Time.timeScale = 0f;
 			if (Input.GetKeyDown(KeyCode.Space)){
 				Restart();
 			}
+		}
+		if(lives == 0)
+		{
+			Die();
 		}
     }
 
@@ -27,4 +34,10 @@ public class GameHandler : MonoBehaviour
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
+
+	public void Die()
+	{
+		restartPanel.SetActive(true);
+	}
+
 }
