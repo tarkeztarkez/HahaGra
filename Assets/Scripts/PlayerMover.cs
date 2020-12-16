@@ -17,7 +17,6 @@ public class PlayerMover : MonoBehaviour
 
 	private bool clickable = true;
 	private Rigidbody2D rb;
-	public GameHandler gameHandler;
 	private SpriteRenderer spriteRenderer;
 
     // Start is called before the first frame update
@@ -44,20 +43,17 @@ public class PlayerMover : MonoBehaviour
 		if (collision.gameObject.tag == "SlowTime")
 		{
 			gotCoin(collision);
-			GameHandler.slowTimeActivated = true;
+			GameHandler.ActivateSlowTime();
 		}
 		if (collision.gameObject.tag == "Immortality")
 		{
 			gotCoin(collision);
-			GameHandler.immortalityActivated = true;
+			GameHandler.ActivateImmortality();
 		}
 
 		if (collision.gameObject.tag == "Killer")
 		{
-			if (!GameHandler.immortalityActivated)
-			{
-				gameHandler.lives += -1;
-			}
+			if (GameHandler.immortalityTimer.GetTimeRemaining() == 0) GameHandler.trapTrigerred();
 		}
 	}
 
@@ -113,6 +109,6 @@ public class PlayerMover : MonoBehaviour
 		animator.SetBool("jumped", false);
 		spriteRenderer.color = Color.green;
 		jumped = false;
-		if (gameHandler.lives <= 3) gameHandler.lives += 1;
+		if (GameHandler.lives <= 3) GameHandler.lives += 1;
 	}
 }

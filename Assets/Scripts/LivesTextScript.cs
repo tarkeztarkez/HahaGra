@@ -5,7 +5,6 @@ using UnityEngine.UI;
 
 public class LivesTextScript : MonoBehaviour
 {
-    public GameHandler gameHandler;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,6 +14,15 @@ public class LivesTextScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GetComponent<Text>().text = gameHandler.lives.ToString();
+        GetComponent<Text>().text = GameHandler.lives.ToString();
+        if(GameHandler.immortalityTimer.GetTimeRemaining() > 0)
+        {
+            GetComponent<Text>().color = Color.green;
+        }
+        else
+        {
+            GetComponent<Text>().color = Color.black;
+        }
+
     }
 }

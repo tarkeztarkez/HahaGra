@@ -6,41 +6,24 @@ using UnityEngine.SceneManagement;
 public class GameHandler : MonoBehaviour
 {
 	public GameObject restartPanel;
-	public int lives = 3;
+	static public int lives = 3;
+	public static float gameSpeedModifier;
 
-	public static bool slowTimeActivated;
-	public static bool immortalityActivated;
-	public static float gameSpeed;
+	static public Timer immortalityTimer;
+	static public Timer slowTimeTimer;
 
-	public float slowTimeDelay;
-	float timeFromSlow;
-	public float immortalitydelay;
-	float timeFromImmortality;
 	void Start()
     {
 		Time.timeScale = 1f;
-		slowTimeActivated = false;
-		immortalityActivated = false;
-		gameSpeed = 4;
+		gameSpeedModifier = 1f;
     }
 
     // Update is called once per frame
     void Update()
-    {
-		if (restartPanel.active)
-		{
-			Time.timeScale = 0f;
-			if (Input.GetKeyDown(KeyCode.Space)){
-				Restart();
-			}
-		}
+	{ 
 		if(lives == 0)
 		{
 			Die();
-		}
-		if (slowTimeActivated)
-		{
-			SlowTimeActivated();
 		}
 		if (Input.GetKeyDown(KeyCode.P))
 		{
@@ -55,37 +38,39 @@ public class GameHandler : MonoBehaviour
 		}
     }
 
-	public void Restart()
+	public static void trapTrigerred()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+		lives = +-1;
 	}
 
 	public void Die()
 	{
 		restartPanel.SetActive(true);
+		Time.timeScale = 0f;
+		if (Input.GetKeyDown(KeyCode.Space))
+		{
+			Restart();
+		}
+	}
+	public void Restart()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 	}
 
 
-	public void SlowTimeActivated()
+	static public void ActivateSlowTime()
 	{
-		gameSpeed = 2;
-		if (timeFromSlow >= slowTimeDelay)
+		if (slowTimeTimer.GetTimeRemaining() > 0) slowTimeTimer.Cancel();
+		gameSpeedModifier = 0.5f;
+		slowTimeTimer = Timer.Register(2f, onComplete:() =>
 		{
-			slowTimeActivated = false;
-			gameSpeed = 4;
-			timeFromSlow = 0;
-		}
-		timeFromSlow += Time.deltaTime;
+			gameSpeedModifier = 1f;
+		});
 	}
 
-	public void ImmortalityActivated()
+	static public void ActivateImmortality()
 	{
-		if (timeFromSlow >= immortalitydelay)
-		{
-			immortalityActivated = false;
-			timeFromImmortality = 0;
-		}
-		timeFromImmortality += Time.deltaTime;
+		immortalityTimer = Timer.Register(10f, onComplete:()=> { });	
 	}
 }
 

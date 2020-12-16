@@ -8,7 +8,6 @@ public class PlatformMover : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		speed = GameHandler.gameSpeed;
-		transform.position += new Vector3(-speed * Time.deltaTime, 0, 0);
+		transform.position += new Vector3(-speed *GameHandler.gameSpeedModifier*Time.deltaTime, 0, 0);
 	}
 }
